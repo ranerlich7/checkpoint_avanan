@@ -1,9 +1,13 @@
 import json
 import bisect
 import time
-from flask import Flask, jsonify, request
+# from flask import Flask, jsonify, request
 
-app = Flask(__name__)
+# app = Flask(__name__)
+
+from fastapi import FastAPI, HTTPException, Body
+
+app = FastAPI()
 
 
 words={
@@ -35,30 +39,33 @@ def get_words(interval):
     return data
     
     
-@app.route("/stats", methods=['GET'])
-def stats():
+@app.get("/stats")
+async def stats(interval: int):
     try:
-        interval = int(time.time()) - int(request.args.get('interval'))
+        interval = int(time.time()) - interval
         return_data = get_words(interval)
-        return jsonify(return_data), 200
+        return return_data
     except ValueError:
-        return jsonify({'error': 'Bad Request', 'message': 'Invalid input provided'}), 400
+        raise HTTPException(status_code=400, detail="Invalid input provided")
+
     
 def count_and_update(sentence, phrase, now_time):
     tmp_count = sentence.count(phrase)
     words[phrase].append((now_time, tmp_count))
     
-    
-@app.route("/events", methods=['POST'])
-def events():
-    current_time = int(time.time())
-    sentence = request.get_data(as_text=True).lower()
+def get_events(sentence, current_time):
     count_and_update(sentence, 'email', current_time)
     count_and_update(sentence, 'checkpoint', current_time)
     count_and_update(sentence, 'avanan', current_time)
     count_and_update(sentence, 'security', current_time)
-    return jsonify({'message': 'Updated successfuly'}), 200
+    
+
+@app.post("/events")
+async def events(sentence: str = Body(..., media_type="text/plain")):
+    current_time = int(time.time())
+    get_events(sentence.lower(), current_time)
+    return {'message': 'Updated successfuly'}
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
