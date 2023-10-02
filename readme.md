@@ -1,6 +1,14 @@
 # Checkpoint Avanan - home assignment . Ran Erlich
 
-# words
+# run server
+1. clone repository
+2. python -m venv venv
+3. activate venv
+4. pip install -r requirements.txt
+5. uvicorn app:app --reload
+
+
+# words - a dictionary in memory
 
 This is a dictionary that keeps in memory the words recieved
 each word will keep an array of time stamps and number of occurences. for example in the input curl requests:
@@ -19,6 +27,16 @@ words={
 'security:[(1696164351,1)]
 
 }
+
+# high scale
+FastAPI was used along with async function
+stress test applied using 
+
+# unit-tests
+basic unit test was provided. it can be extended if needed
+run:
+
+python -m unittest test.py
 
 # todo
 
