@@ -26,6 +26,7 @@ def count_word(word_arr, interval):
     timestamps = [occurrence[0] for occurrence in word_arr]
     # using binary search find the index of the interval o(n)
     index_of_start = bisect.bisect_left(timestamps, interval)
+    print(interval,word_arr[index_of_start:])
     return sum(occurrence[1] for occurrence in word_arr[index_of_start:])
 
     
@@ -50,8 +51,12 @@ async def stats(interval: int):
 
     
 def count_and_update(sentence, phrase, now_time):
+    print(f"sentence:{sentence}, phrase:{phrase},now_time:{now_time}")
     tmp_count = sentence.count(phrase)
-    words[phrase].append((now_time, tmp_count))
+    print(f"tmp_count:{tmp_count}")
+    print(f"words:{words}")
+    if tmp_count > 0:
+        words[phrase].append((now_time, tmp_count))
     
 def get_events(sentence, current_time):
     count_and_update(sentence, 'email', current_time)
@@ -67,5 +72,3 @@ async def events(sentence: str = Body(..., media_type="text/plain")):
     return {'message': 'Updated successfuly'}
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
