@@ -42,8 +42,7 @@ run:
 * python -m unittest test.py
 
 # Docker support
+docker was used and deployed on ec2
+you can check it in this address:
+* http://16.171.112.81:4000/stats?interval=1000
 
-Use gunicorn with non-blocking async workers
-Containerize the app with Docker
-Deploy it in a Kubernetes cluster
-Add an API Gateway in front of Kube
