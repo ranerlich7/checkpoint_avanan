@@ -30,15 +30,18 @@ words={
 
 # high scale
 FastAPI was used along with async function
-stress test applied using 
+stress test applied using locust
+run:
+
+* locust -f locustfile.py
 
 # unit-tests
 basic unit test was provided. it can be extended if needed
 run:
 
-python -m unittest test.py
+* python -m unittest test.py
 
-# todo
+# Docker support
 
 Use gunicorn with non-blocking async workers
 Containerize the app with Docker
